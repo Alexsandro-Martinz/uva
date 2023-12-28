@@ -25,11 +25,11 @@ public class UserDAO {
 			PreparedStatement stm = null;
 
 			if(!search.equals("")) {
-				sql = "SELECT * FROM users WHERE username LIKE ? ORDER BY id DESC LIMIT 15";
+				sql = "SELECT * FROM users WHERE username LIKE ? ORDER BY id DESC LIMIT 13";
 				stm = conn.prepareStatement(sql);
 				stm.setString(1, "%"+search+"%");
 			} else {
-				sql = "SELECT * FROM users ORDER BY id DESC LIMIT 15";
+				sql = "SELECT * FROM users ORDER BY id DESC LIMIT 13";
 				stm = conn.prepareStatement(sql);
 			}
 			
