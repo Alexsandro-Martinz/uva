@@ -11,6 +11,7 @@ import com.google.gson.JsonObject;
 import br.com.uva.dao.UserDAO;
 import br.com.uva.model.User;
 import br.com.uva.services.UserValidateData;
+import jakarta.security.auth.message.callback.PrivateKeyCallback.Request;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -51,6 +52,14 @@ public class UsersServlet extends HttpServlet {
 			dataResponse.put("detail", "bad request: username or document wrong" );
 			senderResponse(dataResponse, 400, response);
 		}
+	}
+	
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		Long id = Long.parseLong(req.getParameter("id"));
+		new UserDAO().delete(id);
+		
 	}
 
 	void senderResponse(Object data,  int status, HttpServletResponse response) throws IOException {

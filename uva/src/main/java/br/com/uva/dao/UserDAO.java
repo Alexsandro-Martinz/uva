@@ -82,4 +82,22 @@ public class UserDAO {
 		return false;
 	}
 
+	public void delete(Long id) {
+		try {
+			String sql = "DELETE FROM users WHERE id=?";
+			conn = SingleConnection.getConnection();
+			PreparedStatement stm = conn.prepareStatement(sql);
+			stm.setLong(1, id);
+			stm.execute();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+
 }
