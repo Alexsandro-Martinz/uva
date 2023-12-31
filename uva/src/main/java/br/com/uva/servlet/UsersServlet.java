@@ -2,11 +2,13 @@ package br.com.uva.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.oracle.wls.shaded.org.apache.xalan.xsltc.compiler.sym;
 
 import br.com.uva.dao.UserDAO;
 import br.com.uva.model.User;
@@ -54,11 +56,28 @@ public class UsersServlet extends HttpServlet {
 		}
 	}
 	
+	
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		Long id = Long.parseLong(req.getParameter("id"));
 		new UserDAO().delete(id);
+		
+	}
+	
+	
+	@Override
+	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		JsonObject data = new Gson().fromJson(req.getReader(), JsonObject.class);
+		User user = new User();
+		
+		user.setId(data.get("id").getAsLong());
+		user.setUsername(data.get("username").getAsString());
+		user.setFirstName(data.get("firstName").getAsString());
+		user.setLastName(data.get("lastName").getAsString());
+		user.setDocument(data.get("document").getAsString());
+		
+		new UserDAO().update(user);
 		
 	}
 
