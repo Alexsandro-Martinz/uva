@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
-
 import br.com.uva.connection.SingleConnection;
 import br.com.uva.model.User;
 
@@ -55,7 +53,6 @@ public class UserDAO {
 	}
 
 	public Boolean create(User user) {
-
 		try {
 			String sql = """
 						INSERT INTO public.users (username,firstName,lastName,document,password)
@@ -125,13 +122,12 @@ public class UserDAO {
 			sql += " document = ? ,";
 			sqlData.add(user.getDocument());
 		}
-		
+	
 		sql = sql.substring(0, sql.length()-1);
 
 		
 		sql += " WHERE id=?";
 
-		System.out.println(sql);
 		conn = SingleConnection.getConnection();
 		try {
 			PreparedStatement stm = conn.prepareStatement(sql);

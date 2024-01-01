@@ -24,11 +24,12 @@
 				<nav class="navbar navbar-light bg-light m-0">
 					<div
 						class="container-fluid justify-content-around align-items-center">
-						<div class="d-flex">
+						<form id="searchForm" class="d-flex">
 							<input class="form-control me-2" id="search-input" type="search"
 								placeholder="Search" aria-label="Search">
-							<button id="searchBtn" class="btn btn-outline-success">Search</button>
-						</div>
+							<button type="submit" id="searchBtn"
+								class="btn btn-outline-success">Search</button>
+						</form>
 						<button type="button" data-bs-toggle="modal"
 							data-bs-target="#addUserModal" class="btn btn-success">Add
 							a new user</button>
@@ -57,9 +58,10 @@
 		</div>
 	</div>
 	<script type="text/javascript">
+	
 function setUsersTable(users) {
 	const tblBody = document.getElementById("usersTable");
-	tblBody.innerHTML = '';
+	$('#usersTable > tr').remove();
 	let count = 1;
 	
 	users.forEach(u => {
@@ -92,28 +94,34 @@ function setUsersTable(users) {
 		row.appendChild(c5);
 
 		const btnUpdate = document.createElement("button");
-		btnUpdate.className = "btn btn-info btn-sm m-0 p-1 ";
+		btnUpdate.className = "btn btn-info fw-bold btn-sm m-0 p-1 ";
 		btnUpdate.style = "font-size: 12px"
 		btnUpdate.innerHTML = "UPDATE";
 		
 		btnUpdate.onclick = () => {
 			showUpdateUserModal(u);
 		}
-
-		const c6 = document.createElement("td");
-		c6.appendChild(btnUpdate);
-		row.appendChild(c6);
-
+		
+		const d1 = document.createElement("div");
+		d1.className = "col-auto";
+		d1.appendChild(btnUpdate);
+		
 		const btn = document.createElement("button");
-		btn.className = "btn btn-warning btn-sm m-0 p-1 mx-auto ";
+		btn.className = "btn btn-danger fw-bold btn-sm m-0 p-1 ";
 		btn.style = "font-size: 12px"
 		btn.innerHTML = "DEL";
 		btn.onclick = () => delUser(u.id, u.username);
-
-		const c7 = document.createElement("td");
-		c7.appendChild(btn);
-		row.appendChild(c7);
-
+		
+		const d2 = document.createElement("div");
+		d2.className = "col-auto";
+		d2.appendChild(btn);
+		
+		const c6 = document.createElement("td");
+		c6.className = "row justify-content-around m-0";
+		c6.appendChild(d1);
+		c6.appendChild(d2);
+		row.appendChild(c6);
+		
 		tblBody.appendChild(row);
 		count++;
 	});
@@ -132,9 +140,10 @@ function getAllUsers(search = "") {
 
 getAllUsers();
 
-const searchBtn = document.querySelector("#searchBtn");
+const searchForm = document.querySelector("#searchForm");
 
-searchBtn.addEventListener("click", () => {
+searchForm.addEventListener("submit", (event) => {
+	event.preventDefault();
 	getAllUsers(document.getElementById("search-input").value);
 });
 

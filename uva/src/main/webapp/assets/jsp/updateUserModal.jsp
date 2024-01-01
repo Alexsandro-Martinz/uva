@@ -48,7 +48,7 @@
 								name="document" >
 						</div>
 					</div>
-
+					
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal">Cancel</button>
@@ -80,7 +80,7 @@
 		
 		console.log(data);
 		
-		if(data.username == "" && data.firstName == "" && data.lastName == "" && data.document == ""){
+		if(data.username == "" && data.firstName == "" && data.lastName == "" && data.document == "" ){
 			alert("Edit some field for update");
 			return;
 		}
@@ -95,6 +95,8 @@
 		    		updateUserForm.reset();
 		    		getAllUsers();
 		    		$('#updateUserModal').modal('hide');
+		    	}else {
+		    		alert("Error on update");
 		    	}
 		    });
 		

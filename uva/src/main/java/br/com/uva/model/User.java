@@ -10,6 +10,7 @@ public class User {
 	private String document;
 	private String username;
 	private String password;
+	
 	public User() {
 		super();
 	}
@@ -21,6 +22,12 @@ public class User {
 		this.document = document;
 		this.username = username;
 		this.password = password;
+	}
+	
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", document=" + document
+				+ ", username=" + username + ", password=" + password + "]";
 	}
 	public long getId() {
 		return id;
@@ -58,11 +65,10 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", document=" + document
-				+ ", username=" + username + "]";
-	}
+	
+	
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(document, id, username);

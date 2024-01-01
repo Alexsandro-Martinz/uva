@@ -9,6 +9,7 @@ public class UserValidateData {
 	private String lastName;
 	private String document;
 	private String password;
+
 	public UserValidateData(String username, String firstName, String lastName, String document, String password) {
 
 		validadeField(username, "Username invalid");

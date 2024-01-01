@@ -2,18 +2,15 @@ package br.com.uva.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.oracle.wls.shaded.org.apache.xalan.xsltc.compiler.sym;
 
 import br.com.uva.dao.UserDAO;
 import br.com.uva.model.User;
 import br.com.uva.services.UserValidateData;
-import jakarta.security.auth.message.callback.PrivateKeyCallback.Request;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

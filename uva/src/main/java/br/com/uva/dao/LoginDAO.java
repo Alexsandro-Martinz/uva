@@ -10,32 +10,38 @@ import br.com.uva.model.User;
 
 public class LoginDAO {
 
-	public static User getUserIfAuthenticated(String username, String password) {
+	public static User getUserIfAuthenticated(String username, String password) throws SQLException {
 
-		try {
-			String sql = """
-						SELECT * FROM users
-						WHERE username = ? and password = ?;
-					""";
+		String authenticationSql = """
+					SELECT * FROM users
+					WHERE username = ? and password = ?;
+				""";
 
-			Connection conn = SingleConnection.getConnection();
-			PreparedStatement stm = conn.prepareStatement(sql);
-			stm.setString(1, username);
-			stm.setString(2, password);
+		Connection conn = SingleConnection.getConnection();
+		PreparedStatement authenticationStm = conn.prepareStatement(authenticationSql);
+		authenticationStm.setString(1, username);
+		authenticationStm.setString(2, password);
 
-			ResultSet result = stm.executeQuery();
+		ResultSet userResult = authenticationStm.executeQuery();
 
-			if (result.next()) {
-				User user = new User();
-				user.setId(result.getLong("id"));
-				user.setUsername(username);
-				return user;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+		if (!userResult.next()) {
+			return null;
 		}
 
-		return null;
+		User user = new User();
+		user.setId(userResult.getLong("id"));
+		user.setUsername(username);
+
+		String userRoleSql = "SELECT * FROM users_roles WHERE user_id=?";
+		PreparedStatement userRolesStm = conn.prepareStatement(userRoleSql);
+		userRolesStm.setLong(1, user.getId());
+		ResultSet userRolesResult = userRolesStm.executeQuery();
+		
+		while(userRolesResult.next()) {
+			System.err.println(userRolesResult.getLong("role_id"));
+		}
+		
+		return user;
 	}
 
 }
