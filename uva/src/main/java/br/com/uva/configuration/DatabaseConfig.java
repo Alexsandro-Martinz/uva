@@ -67,7 +67,7 @@ public class DatabaseConfig {
 	
 	
 	public static void config() {
-		runSql(dropTablesSql);
+		// runSql(dropTablesSql);
 		runSql(createTableSql);
 		runSql(insertSql);
 	}

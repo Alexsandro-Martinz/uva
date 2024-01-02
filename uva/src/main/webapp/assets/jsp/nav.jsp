@@ -7,13 +7,17 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarScroll">
-			<ul
+			<ul id="navOptions"
 				class="navbar-nav me-auto my-1 align-items-center my-lg-0 navbar-nav-scroll"
 				style="--bs-scroll-height: 100px;">
 				<li class="nav-item"><a class="nav-link active"
 					aria-current="page" href="<%=request.getContextPath()%>/main/home.jsp">Home</a></li>
+
+				<%if ( request.getSession().getAttribute("user").toString().contains("administrator")){%>
+					
 				<li class="nav-item"><a class="nav-link active"
 					aria-current="page" href="<%=request.getContextPath()%>/main/users.jsp">Users</a></li>
+					<%} %>
 			</ul>
 			<ul
 				class="navbar-nav ms-auto my-1 my-lg-0 align-items-center navbar-nav-scroll"

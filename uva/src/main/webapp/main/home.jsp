@@ -16,7 +16,14 @@
 		<c:import url="/assets/jsp/nav.jsp"></c:import>
 
 		<div class="container">
-			<h1>Hello every body</h1>
+
+			<div class="row justify-content-center">
+				<div class="col-auto">
+					<h1>Hello every body</h1>
+					<h2>${user.role }</h2>
+				</div>
+			</div>
+
 		</div>
 
 	</div>

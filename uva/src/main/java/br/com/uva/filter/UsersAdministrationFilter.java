@@ -2,6 +2,7 @@ package br.com.uva.filter;
 
 import java.io.IOException;
 
+import br.com.uva.model.User;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -10,21 +11,33 @@ import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 
-@WebFilter(urlPatterns = { "/api/users" })
+@WebFilter(urlPatterns = { "/api/users", "/main/users.jsp" })
 public class UsersAdministrationFilter extends HttpFilter implements Filter {
        
 	private static final long serialVersionUID = 1L;
 
 	public void destroy() {
-		// TODO Auto-generated method stub
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		
-		System.out.println("Filtering: users requests...");
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpSession session = req.getSession();
 		
+		User user = (User) session.getAttribute("user");
+		
+		String role = user.getRole();
+		
+		
+		if(role == null || !role.equalsIgnoreCase("administrator")) {
+			request.getRequestDispatcher("/main/home.jsp").forward(request, response);
+			return;
+		} 
+			
 		chain.doFilter(request, response);
 	}
 

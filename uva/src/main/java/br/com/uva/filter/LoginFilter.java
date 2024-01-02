@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import br.com.uva.configuration.DatabaseConfig;
+import br.com.uva.model.User;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -41,7 +42,9 @@ public class LoginFilter extends HttpServlet implements Filter {
 			HttpSession session = req.getSession();
 			String urlRequested = req.getServletPath();
 
-			if (session.getAttribute("user") == null) {
+			User user = (User) session.getAttribute("user");
+			
+			if (user == null) {
 				request.setAttribute("message", "Please sign in");
 				request.setAttribute("url", urlRequested);
 				request.getRequestDispatcher("/index.jsp").forward(request, response);

@@ -50,7 +50,7 @@ public class LoginServlet extends HttpServlet {
 			e.printStackTrace();
 			try {
 				request.setAttribute("message", e.getMessage());
-				getServletContext().getRequestDispatcher("/error.jsp").forward(request, response);
+				getServletContext().getRequestDispatcher("error.jsp").forward(request, response);
 			} catch (ServletException | IOException e1) {
 				e1.printStackTrace();
 			}

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import br.com.uva.connection.SingleConnection;
 import br.com.uva.model.User;
@@ -30,15 +31,23 @@ public class LoginDAO {
 
 		User user = new User();
 		user.setId(userResult.getLong("id"));
-		user.setUsername(username);
-
-		String userRoleSql = "SELECT * FROM users_roles WHERE user_id=?";
+		user.setUsername(userResult.getString("username"));
+		user.setFirstName(userResult.getString("firstName"));
+		user.setLastName(userResult.getString("lastName"));
+		user.setDocument(userResult.getString("document"));
+		
+		String userRoleSql = """
+				select roles.name from users_roles 
+				inner join roles on users_roles.role_id = roles.id 
+				where users_roles.user_id=?;
+				""";
 		PreparedStatement userRolesStm = conn.prepareStatement(userRoleSql);
 		userRolesStm.setLong(1, user.getId());
 		ResultSet userRolesResult = userRolesStm.executeQuery();
 		
-		while(userRolesResult.next()) {
-			System.err.println(userRolesResult.getLong("role_id"));
+		
+		if(userRolesResult.next()) {
+			user.setRole(userRolesResult.getString("name"));
 		}
 		
 		return user;
