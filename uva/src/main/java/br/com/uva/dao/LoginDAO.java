@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import br.com.uva.connection.SingleConnection;
+import br.com.uva.model.Role;
 import br.com.uva.model.User;
 
 public class LoginDAO {
@@ -14,7 +15,12 @@ public class LoginDAO {
 	public static User getUserIfAuthenticated(String username, String password) throws SQLException {
 
 		String authenticationSql = """
-					SELECT * FROM users
+					SELECT
+						USERS.id, USERS.username, USERS.firstName, USERS.lastName,
+						USERS.document, roles.name as role
+					FROM
+						USERS
+					INNER JOIN roles ON users.role_id = roles.id
 					WHERE username = ? and password = ?;
 				""";
 
@@ -35,21 +41,8 @@ public class LoginDAO {
 		user.setFirstName(userResult.getString("firstName"));
 		user.setLastName(userResult.getString("lastName"));
 		user.setDocument(userResult.getString("document"));
-		
-		String userRoleSql = """
-				select roles.name from users_roles 
-				inner join roles on users_roles.role_id = roles.id 
-				where users_roles.user_id=?;
-				""";
-		PreparedStatement userRolesStm = conn.prepareStatement(userRoleSql);
-		userRolesStm.setLong(1, user.getId());
-		ResultSet userRolesResult = userRolesStm.executeQuery();
-		
-		
-		if(userRolesResult.next()) {
-			user.setRole(userRolesResult.getString("name"));
-		}
-		
+		user.setRole(Role.getRole(userResult.getString("role")));
+
 		return user;
 	}
 

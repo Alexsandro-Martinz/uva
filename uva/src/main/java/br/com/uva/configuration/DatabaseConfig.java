@@ -23,15 +23,8 @@ public class DatabaseConfig {
 					firstName VARCHAR(200) NOT NULL,
 					lastName VARCHAR(200) NOT NULL,
 					document VARCHAR(200) UNIQUE NOT NULL,
-					password VARCHAR(200) NOT NULL
-				);
-
-				CREATE TABLE IF NOT EXISTS users_roles(
-					id SERIAL PRIMARY KEY,
-					user_id integer not null,
-					role_id integer not null,
-					FOREIGN KEY (user_id)
-						REFERENCES users(id),
+					password VARCHAR(200) NOT NULL,
+					role_id INTEGER DEFAULT 3,
 					FOREIGN KEY (role_id)
 						REFERENCES roles(id)
 				);
@@ -45,29 +38,21 @@ public class DatabaseConfig {
 			VALUES ('administrator'), ('support'), ('user')
 			ON CONFLICT DO NOTHING;
 
-			INSERT INTO users(username, firstName, lastName, document, password)
-			values ('admin', 'alex', 'silva', '654545546654', 'admin')
+			INSERT INTO users(username, firstName, lastName, document, password, role_id)
+			values ('admin', 'alex', 'silva', '654545546654', 'admin', 1)
 			ON CONFLICT DO NOTHING;
-			
-			INSERT INTO users_roles(user_id, role_id)
-			SELECT 1,1
-			WHERE NOT EXISTS (
-				SELECT * FROM users_roles 
-				WHERE user_id = 1 and role_id = 1
-			);
 
 			""";
 	
 	private static String dropTablesSql = """
 			
-			DROP TABLE users_roles;
 			DROP TABLE users, roles;
 			
 			""";
 	
 	
 	public static void config() {
-		// runSql(dropTablesSql);
+		//runSql(dropTablesSql);
 		runSql(createTableSql);
 		runSql(insertSql);
 	}

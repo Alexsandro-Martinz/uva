@@ -2,6 +2,7 @@ package br.com.uva.filter;
 
 import java.io.IOException;
 
+import br.com.uva.model.Role;
 import br.com.uva.model.User;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -30,10 +31,9 @@ public class UsersAdministrationFilter extends HttpFilter implements Filter {
 		
 		User user = (User) session.getAttribute("user");
 		
-		String role = user.getRole();
+		Role role = user.getRole();
 		
-		
-		if(role == null || !role.equalsIgnoreCase("administrator")) {
+		if(role == null || role.equals(Role.USER)) {
 			request.getRequestDispatcher("/main/home.jsp").forward(request, response);
 			return;
 		} 

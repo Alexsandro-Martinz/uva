@@ -9,13 +9,16 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import br.com.uva.dao.UserDAO;
+import br.com.uva.model.Role;
 import br.com.uva.model.User;
 import br.com.uva.services.UserValidateData;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/api/users")
 public class UsersServlet extends HttpServlet {
@@ -29,8 +32,24 @@ public class UsersServlet extends HttpServlet {
 			search = "";
 		}
 		
+
+		HttpServletRequest request = (HttpServletRequest) req;
+		HttpSession session = request.getSession();
 		
-		List<User> users = new UserDAO().getUsers(search);			
+		User user = (User) session.getAttribute("user");
+		
+		Role role = user.getRole();
+		
+		List<User> users = null;
+		
+		if(role.equals(Role.ADMINISTRATOR)){
+			users = new UserDAO().getUsersSupports(search);						
+		}
+		
+		if(role.equals(Role.SUPPORT)){
+			users = new UserDAO().getUsers(search);						
+		}
+		
 		senderResponse(users, 200, resp);
 	
 	}
@@ -42,7 +61,7 @@ public class UsersServlet extends HttpServlet {
 				data.get("lastName").getAsString(), data.get("document").getAsString(),
 				data.get("password").getAsString()).getUser();
 		
-		if(new UserDAO().create(user)) {
+		if(new UserDAO().create(user, data.get("userType").getAsLong())) {
 			HashMap<String, String> dataResponse = new HashMap<String, String>();
 			dataResponse.put("detail", "User added" );
 			senderResponse(dataResponse, 201, response);			

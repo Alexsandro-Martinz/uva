@@ -16,11 +16,12 @@
 		<c:import url="/assets/jsp/nav.jsp"></c:import>
 
 		<div class="container">
-
 			<div class="row justify-content-center">
 				<div class="col-auto">
-					<h1>Hello every body</h1>
-					<h2>${user.role }</h2>
+					<div class="ratio ratio-1x1">
+						<iframe src="https://www.youtube.com/watch?v=A3_uQuVRnsE"
+							title="YouTube video" allowfullscreen></iframe>
+					</div>
 				</div>
 			</div>
 

@@ -49,6 +49,16 @@
 								name="password" required="required">
 						</div>
 					</div>
+					<div class="mb-3 row">
+						<select id="userType" name="userType" class="form-select col-sm-2 m-auto text-center" aria-label="Default select example">
+							<option value="3" selected>User</option>
+							<%if ( request.getSession().getAttribute("user").toString().contains("administrator")){%>
+							<option value="2">Suport</option>
+							<option value="1">Administration</option>
+							<%} %>
+							
+						</select>
+					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal">Cancel</button>
@@ -74,6 +84,7 @@
 		const lastName = document.getElementById("lastName").value;
 		const documentUser = document.getElementById("document").value;
 		const password = document.getElementById("password").value;
+		const userType = document.getElementById("userType").value;
 		
 		const data = {
 			'username': username,
@@ -81,6 +92,7 @@
 			'lastName': lastName,
 			'document': documentUser,
 			'password': password,
+			'userType': userType,
 		}
 		
 		fetch(url, {

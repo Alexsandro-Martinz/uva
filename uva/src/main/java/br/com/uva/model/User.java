@@ -10,12 +10,12 @@ public class User {
 	private String document;
 	private String username;
 	private String password;
-	private String role;
-	
-	public String getRole() {
+	private Role role;
+
+	public Role getRole() {
 		return role;
 	}
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 	public User() {
@@ -34,7 +34,7 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", document=" + document
-				+ ", username=" + username + ", password=" + password + ", role=" + role + "]";
+				+ ", username=" + username + ", role=" + role + "]";
 	}
 	public long getId() {
 		return id;

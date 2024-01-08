@@ -13,7 +13,8 @@
 				<li class="nav-item"><a class="nav-link active"
 					aria-current="page" href="<%=request.getContextPath()%>/main/home.jsp">Home</a></li>
 
-				<%if ( request.getSession().getAttribute("user").toString().contains("administrator")){%>
+				<% String userData = request.getSession().getAttribute("user").toString(); %>
+				<%if ( userData.contains("administrator") || userData.contains("support")){%>
 					
 				<li class="nav-item"><a class="nav-link active"
 					aria-current="page" href="<%=request.getContextPath()%>/main/users.jsp">Users</a></li>
