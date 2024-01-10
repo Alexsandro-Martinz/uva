@@ -1,6 +1,7 @@
 package br.com.uva.servlet;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
@@ -14,12 +15,15 @@ import br.com.uva.model.User;
 import br.com.uva.services.UserValidateData;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
 
+@MultipartConfig
 @WebServlet("/api/users")
 public class UsersServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -56,20 +60,27 @@ public class UsersServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
-		User user = new UserValidateData(data.get("username").getAsString(), data.get("firstName").getAsString(),
-				data.get("lastName").getAsString(), data.get("document").getAsString(),
-				data.get("password").getAsString()).getUser();
 		
-		if(new UserDAO().create(user, data.get("userType").getAsLong())) {
-			HashMap<String, String> dataResponse = new HashMap<String, String>();
-			dataResponse.put("detail", "User added" );
-			senderResponse(dataResponse, 201, response);			
-		} else {
-			HashMap<String, String> dataResponse = new HashMap<String, String>();
-			dataResponse.put("detail", "bad request: username or document wrong" );
-			senderResponse(dataResponse, 400, response);
-		}
+		System.out.println("in post users...");
+		
+		Part filePart = request.getPart("photo");
+		InputStream inputStream = filePart.getInputStream();
+		System.out.println(inputStream);
+		System.out.println(request.getParameter("username"));
+//		JsonObject data = new Gson().fromJson(request.getReader(), JsonObject.class);
+//		User user = new UserValidateData(data.get("username").getAsString(), data.get("firstName").getAsString(),
+//				data.get("lastName").getAsString(), data.get("document").getAsString(),
+//				data.get("password").getAsString()).getUser();
+//		
+//		if(new UserDAO().create(user, data.get("userType").getAsLong())) {
+//			HashMap<String, String> dataResponse = new HashMap<String, String>();
+//			dataResponse.put("detail", "User added" );
+//			senderResponse(dataResponse, 201, response);			
+//		} else {
+//			HashMap<String, String> dataResponse = new HashMap<String, String>();
+//			dataResponse.put("detail", "bad request: username or document wrong" );
+//			senderResponse(dataResponse, 400, response);
+//		}
 	}
 	
 	

@@ -8,7 +8,19 @@
 			</div>
 			<div class="modal-body">
 
-				<form id="addUserForm" autocomplete="off">
+				<form id="addUserForm" enctype="multipart/form-data" autocomplete="off">
+
+					<div class="mb-3 row px-3">
+						<img
+						class="col-sm-3 px-0 object-fit img-fluid rounded-circle border border-dark border-3"
+						style="width: 40px; height: 40px" alt="User photo"
+						id="defaultPhoto"
+						src="https://static.javatpoint.com/definition/images/art-definition.png">
+						<div class="col-sm">
+							<input type="file" autocomplete="off" class="form-control"
+								id="photo" name="photo" required="required">
+						</div>
+					</div>
 
 					<div class="mb-3 row">
 						<label for="username" class="col-sm-3 col-form-label">Username</label>
@@ -71,12 +83,31 @@
 </div>
 
 <script type="text/javascript">
+
+const readURL = file => {
+    return new Promise((res, rej) => {
+        const reader = new FileReader();
+        reader.onload = e => res(e.target.result);
+        reader.onerror = e => rej(e);
+        reader.readAsDataURL(file);
+    });
+};
+	
+	const photo = document.getElementById("photo");
+	photo.addEventListener("change", async event => {
+		
+		const selectedPhoto = event.target.files[0];
+		const url = await readURL(selectedPhoto);
+		
+		document.getElementById("defaultPhoto").src = url;
+		
+	})
 	
 	const formUser = document.getElementById("addUserForm");
 	
 	formUser.addEventListener("submit", async event => {
 		event.preventDefault();
-		
+		const formData = new FormData(formUser);
 		const url = "<%=request.getContextPath()%>/api/users";
 		
 		const username = document.getElementById("username").value;
@@ -97,8 +128,8 @@
 		
 		fetch(url, {
 		      method: "POST",
-		      headers: { "Content-Type": "application/json" },
-		      body: JSON.stringify(data),
+		     // headers: { "Content-Type": "application/json" },
+		      body: formData, //JSON.stringify(data),
 		    }).then((response) => {
 		    	if(response.status == 201){
 		    		alert("User added");

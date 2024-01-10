@@ -31,6 +31,11 @@ public class UsersAdministrationFilter extends HttpFilter implements Filter {
 		
 		User user = (User) session.getAttribute("user");
 		
+		if(user == null) {
+			request.getRequestDispatcher("/index.jsp").forward(request, response);
+			return;
+		}
+		
 		Role role = user.getRole();
 		
 		if(role == null || role.equals(Role.USER)) {

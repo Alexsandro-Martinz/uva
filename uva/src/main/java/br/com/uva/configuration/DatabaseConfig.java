@@ -25,6 +25,10 @@ public class DatabaseConfig {
 					document VARCHAR(200) UNIQUE NOT NULL,
 					password VARCHAR(200) NOT NULL,
 					role_id INTEGER DEFAULT 3,
+					
+					photo TEXT,
+					photoExtension VARCHAR(10),
+					
 					FOREIGN KEY (role_id)
 						REFERENCES roles(id)
 				);
@@ -52,7 +56,7 @@ public class DatabaseConfig {
 	
 	
 	public static void config() {
-		//runSql(dropTablesSql);
+//		runSql(dropTablesSql);
 		runSql(createTableSql);
 		runSql(insertSql);
 	}

@@ -11,7 +11,22 @@ public class User {
 	private String username;
 	private String password;
 	private Role role;
+	
+	private String photo;
+	private String photoExtension;
 
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
+	public String getPhotoExtension() {
+		return photoExtension;
+	}
+	public void setPhotoExtension(String photoExtension) {
+		this.photoExtension = photoExtension;
+	}
 	public Role getRole() {
 		return role;
 	}
@@ -34,7 +49,8 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", document=" + document
-				+ ", username=" + username + ", role=" + role + "]";
+				+ ", username=" + username + ", role=" + role + ", photo=" + photo + ", photoExtension="
+				+ photoExtension + "]";
 	}
 	public long getId() {
 		return id;
