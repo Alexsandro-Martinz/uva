@@ -12,12 +12,11 @@
 
 					<div class="mb-3 row px-3">
 						<img
-						class="col-sm-3 px-0 object-fit img-fluid rounded-circle border border-dark border-3"
-						style="width: 40px; height: 40px" alt="User photo"
-						id="defaultPhoto"
-						src="https://static.javatpoint.com/definition/images/art-definition.png">
+						class="col-sm-3 px-0 object-fit img-fluid rounded-circle border border-dark border-1"
+						style="width: 40px; height: 40px"
+						id="defaultPhoto">
 						<div class="col-sm">
-							<input type="file" autocomplete="off" class="form-control"
+							<input type="file" accept="image/*" autocomplete="off" class="form-control"
 								id="photo" name="photo" required="required">
 						</div>
 					</div>

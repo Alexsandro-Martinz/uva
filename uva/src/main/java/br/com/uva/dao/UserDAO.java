@@ -27,7 +27,7 @@ public class UserDAO {
 			if (!search.equals("")) {
 				sql = """
 						SELECT
-						users.id, users.username, users.firstName, users.lastName, users.document, roles.name as role
+						users.id, users.username, users.firstName, users.lastName, users.document, users.photo, roles.name as role
 						from
 							users
 						inner join roles on users.role_id = roles.id
@@ -41,7 +41,7 @@ public class UserDAO {
 				sql = """
 							SELECT
 							USERS.id, USERS.username, USERS.firstName, USERS.lastName,
-							USERS.document, roles.name as role
+							USERS.document, USERS.photo, roles.name as role
 						FROM
 							USERS
 						INNER JOIN roles ON users.role_id = roles.id
@@ -63,6 +63,7 @@ public class UserDAO {
 				user.setLastName(result.getString("lastName"));
 				user.setDocument(result.getString("document"));
 				user.setRole(Role.getRole(result.getString("role")));
+				user.setPhoto(result.getString("photo"));
 				users.add(user);
 			}
 
@@ -84,8 +85,8 @@ public class UserDAO {
 	public Boolean create(User user, Long userType) {
 		try {
 			String sql = """
-						INSERT INTO public.users (username,firstName,lastName,document,password, role_id)
-						VALUES (?,?,?,?,?,?) ON CONFLICT DO NOTHING
+						INSERT INTO public.users (username,firstName,lastName,document,password, role_id, photo, photoExtension)
+						VALUES (?,?,?,?,?,?,?,?) ON CONFLICT DO NOTHING
 						RETURNING id
 					""";
 
@@ -97,6 +98,8 @@ public class UserDAO {
 			stm.setString(4, user.getDocument());
 			stm.setString(5, user.getPassword());
 			stm.setLong(6, userType);
+			stm.setString(7, user.getPhoto());
+			stm.setString(8, user.getPhotoExtension());
 			ResultSet result = stm.executeQuery();
 			if (result.next()) {
 				conn.commit();
