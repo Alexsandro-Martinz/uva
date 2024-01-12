@@ -8,16 +8,16 @@
 			</div>
 			<div class="modal-body">
 
-				<form id="addUserForm" enctype="multipart/form-data" autocomplete="off">
+				<form id="addUserForm" enctype="multipart/form-data"
+					autocomplete="off">
 
-					<div class="mb-3 row px-3">
-						<img
-						class="col-sm-3 px-0 object-fit img-fluid rounded-circle border border-dark border-1"
-						style="width: 40px; height: 40px"
-						id="defaultPhoto">
+					<div class="mb-3 row px-3 align-items-center">
+							<img
+								class=" p-0 rounded-circle border border-dark border-1"
+								style="width: 50px; height: 50px" id="defaultPhoto">
 						<div class="col-sm">
-							<input type="file" accept="image/*" autocomplete="off" class="form-control"
-								id="photo" name="photo" required="required">
+							<input type="file" accept="image/*" autocomplete="off"
+								class="form-control" id="photo" name="photo" required="required">
 						</div>
 					</div>
 
@@ -61,13 +61,19 @@
 						</div>
 					</div>
 					<div class="mb-3 row">
-						<select id="userType" name="userType" class="form-select col-sm-2 m-auto text-center" aria-label="Default select example">
+						<select id="userType" name="userType"
+							class="form-select col-sm-2 m-auto text-center"
+							aria-label="Default select example">
 							<option value="3" selected>User</option>
-							<%if ( request.getSession().getAttribute("user").toString().contains("administrator")){%>
+							<%
+							if (request.getSession().getAttribute("user").toString().contains("administrator")) {
+							%>
 							<option value="2">Suport</option>
 							<option value="1">Administration</option>
-							<%} %>
-							
+							<%
+							}
+							%>
+
 						</select>
 					</div>
 					<div class="modal-footer">

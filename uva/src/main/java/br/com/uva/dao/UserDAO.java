@@ -89,7 +89,7 @@ public class UserDAO {
 						VALUES (?,?,?,?,?,?,?,?) ON CONFLICT DO NOTHING
 						RETURNING id
 					""";
-
+			
 			conn = SingleConnection.getConnection();
 			PreparedStatement stm = conn.prepareStatement(sql);
 			stm.setString(1, user.getUsername());

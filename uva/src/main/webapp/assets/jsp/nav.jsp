@@ -36,9 +36,9 @@
 					</ul></li>
 				<li class="nav-item item-0"><a class="nav-link active"
 					aria-current="page" href="#"><img
-						class="object-fit-none img-fluid rounded-circle border border-dark border-3"
+						class="bg-light object-fit-none img-fluid rounded-circle border border-dark border-3"
 						style="width: 40px; height: 40px" alt=""
-						src="https://static.javatpoint.com/definition/images/art-definition.png"></a></li>
+						src="${user.photo}"></a></li>
 			</ul>
 		</div>
 	</div>

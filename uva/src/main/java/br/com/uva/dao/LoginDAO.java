@@ -17,7 +17,7 @@ public class LoginDAO {
 		String authenticationSql = """
 					SELECT
 						USERS.id, USERS.username, USERS.firstName, USERS.lastName,
-						USERS.document, roles.name as role
+						USERS.document, users.photo, roles.name as role
 					FROM
 						USERS
 					INNER JOIN roles ON users.role_id = roles.id
@@ -41,8 +41,9 @@ public class LoginDAO {
 		user.setFirstName(userResult.getString("firstName"));
 		user.setLastName(userResult.getString("lastName"));
 		user.setDocument(userResult.getString("document"));
+		user.setPhoto(userResult.getString("photo"));
 		user.setRole(Role.getRole(userResult.getString("role")));
-
+		
 		return user;
 	}
 
