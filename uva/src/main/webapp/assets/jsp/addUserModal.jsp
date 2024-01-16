@@ -112,29 +112,12 @@ const readURL = file => {
 	
 	formUser.addEventListener("submit", async event => {
 		event.preventDefault();
-		const formData = new FormData(formUser);
-		const url = "<%=request.getContextPath()%>/api/users";
-		
-		const username = document.getElementById("username").value;
-		const firstName = document.getElementById("firstName").value;
-		const lastName = document.getElementById("lastName").value;
-		const documentUser = document.getElementById("document").value;
-		const password = document.getElementById("password").value;
-		const userType = document.getElementById("userType").value;
-		
-		const data = {
-			'username': username,
-			'firstName': firstName,
-			'lastName': lastName,
-			'document': documentUser,
-			'password': password,
-			'userType': userType,
-		}
+		const url = "<%=request.getContextPath()%>/api/users";		
 		
 		fetch(url, {
 		      method: "POST",
 		     // headers: { "Content-Type": "application/json" },
-		      body: formData, //JSON.stringify(data),
+		      body: new FormData(formUser), //JSON.stringify(data),
 		    }).then((response) => {
 		    	if(response.status == 201){
 		    		alert("User added");

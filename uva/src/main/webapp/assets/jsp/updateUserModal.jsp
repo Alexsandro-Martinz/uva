@@ -9,6 +9,7 @@
 			<div class="modal-body">
 
 				<form id="updateUserForm" autocomplete="off">
+				
 					<div class="mb-3 row">
 						<label for="userId" class="col-sm-3 col-form-label">Id</label>
 						<div class="col-sm">
@@ -21,7 +22,7 @@
 						<label for="username" class="col-sm-3 col-form-label">Username</label>
 						<div class="col-sm">
 							<input type="text" autocomplete="off" class="form-control"
-								id="username" name="username" >
+								id="username" name="username">
 						</div>
 					</div>
 
@@ -30,7 +31,7 @@
 							Name</label>
 						<div class="col-sm">
 							<input type="text" class="form-control" id="firstName"
-								name="firstName" >
+								name="firstName">
 						</div>
 					</div>
 					<div class="mb-3 row">
@@ -38,17 +39,17 @@
 							Name</label>
 						<div class="col-sm">
 							<input type="text" class="form-control" id="lastName"
-								name="lastName" >
+								name="lastName">
 						</div>
 					</div>
 					<div class="mb-3 row">
 						<label for="document" class="col-sm-3 col-form-label">Document</label>
 						<div class="col-sm">
 							<input type="text" class="form-control" id="document"
-								name="document" >
+								name="document">
 						</div>
 					</div>
-					
+
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal">Cancel</button>
@@ -70,25 +71,18 @@
 		
 		const url = "<%=request.getContextPath()%>/api/users";
 		
-		const data = {
-			'id': updateUserForm[0].value,
-			'username': updateUserForm[1].value,
-			'firstName': updateUserForm[2].value,
-			'lastName': updateUserForm[3].value,
-			'document': updateUserForm[4].value,
-		}
+		const username = updateUserForm[1].value;
+		const firstName = updateUserForm[2].value;
+		const document = updateUserForm[3].value;
 		
-		console.log(data);
-		
-		if(data.username == "" && data.firstName == "" && data.lastName == "" && data.document == "" ){
+		if(username == "" && firstName == "" && lastName == "" && document == "" ){
 			alert("Edit some field for update");
 			return;
 		}
 		
 		fetch(url, {
 		      method: "PUT",
-		      headers: { "Content-Type": "application/json" },
-		      body: JSON.stringify(data),
+		      body: new FormData(updateUserForm),
 		    }).then((response) => {
 		    	if(response.status == 200){
 		    		alert("User updated");

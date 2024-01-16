@@ -10,15 +10,25 @@ import java.util.List;
 import br.com.uva.connection.SingleConnection;
 import br.com.uva.model.Role;
 import br.com.uva.model.User;
+import jakarta.websocket.server.PathParam;
 
 public class UserDAO {
 
 	private Connection conn;
+	private final int LIMIT = 13;
 
-	private List<User> getUsersGeneric(String search, int roleId) {
+
+	private List<User> getUsersGeneric(String search, int roleId, Integer offset) {
 
 		List<User> users = new ArrayList<User>();
-
+		
+		if (offset == null) {
+			offset = 0;
+		}
+		
+		offset = (offset-1) * LIMIT;
+		
+		
 		try {
 			String sql = "";
 			conn = SingleConnection.getConnection();
@@ -33,13 +43,15 @@ public class UserDAO {
 						inner join roles on users.role_id = roles.id
 						WHERE
 							username LIKE ? AND users.role_id >= ?
-						ORDER BY id DESC LIMIT 13""";
+						ORDER BY id DESC LIMIT 
+						 """ + LIMIT + " Offset " + offset;
+
 				stm = conn.prepareStatement(sql);
 				stm.setString(1, "%" + search + "%");
 				stm.setLong(2, roleId);
 			} else {
 				sql = """
-							SELECT
+						SELECT
 							USERS.id, USERS.username, USERS.firstName, USERS.lastName,
 							USERS.document, USERS.photo, roles.name as role
 						FROM
@@ -47,13 +59,14 @@ public class UserDAO {
 						INNER JOIN roles ON users.role_id = roles.id
 						WHERE
 							users.role_id >= ?
-						ORDER BY id DESC LIMIT 13
-							""";
+						ORDER BY id DESC LIMIT 
+						""" + LIMIT + " OFFSET "+ offset;
 				stm = conn.prepareStatement(sql);
 				stm.setLong(1, roleId);
 			}
 
 			ResultSet result = stm.executeQuery();
+
 			while (result.next()) {
 
 				User user = new User();
@@ -74,13 +87,62 @@ public class UserDAO {
 		return users;
 	}
 
-	public List<User> getUsers(String search) {
-		return getUsersGeneric(search, 3);
+	private Double countUsersGeneric(String search, int roleId) {
+		double pages = 0D;
+		try {
+			String sql = "";
+			conn = SingleConnection.getConnection();
+			PreparedStatement stm = null;
+
+			if (!search.equals("")) {
+				sql = """
+						SELECT count(*) FROM users
+						inner join roles on users.role_id = roles.id
+						WHERE username LIKE ? AND users.role_id >= ? """;
+
+				stm = conn.prepareStatement(sql);
+				stm.setString(1, "%" + search + "%");
+				stm.setLong(2, roleId);
+			} else {
+				sql = """
+						SELECT COUNT(*) FROM USERS
+						INNER JOIN roles ON users.role_id = roles.id
+						WHERE users.role_id >= ? """;
+
+				stm = conn.prepareStatement(sql);
+				stm.setLong(1, roleId);
+			}
+
+			ResultSet result = stm.executeQuery();
+
+			if(result.next()) {
+				Double count = Double.parseDouble(result.getString("count"));
+				pages = Math.ceil(count / LIMIT);
+				
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return pages;
+
+	}
+
+	public List<User> getUsers(String search, int offset) {
+		return getUsersGeneric(search, 3, offset);
+	}
+
+	public List<User> getUsersSupports(String search, int offset) {
+		return getUsersGeneric(search, 2, offset);
 	}
 	
-	public List<User> getUsersSupports(String search) {
-		return getUsersGeneric(search, 2);
+	public Double countUsers(String search) {
+		return countUsersGeneric(search, 3);
 	}
+
+	public Double countUsersSupports(String search) {
+		return countUsersGeneric(search, 2);	}
+
 
 	public Boolean create(User user, Long userType) {
 		try {
@@ -89,7 +151,7 @@ public class UserDAO {
 						VALUES (?,?,?,?,?,?,?,?) ON CONFLICT DO NOTHING
 						RETURNING id
 					""";
-			
+
 			conn = SingleConnection.getConnection();
 			PreparedStatement stm = conn.prepareStatement(sql);
 			stm.setString(1, user.getUsername());

@@ -35,7 +35,8 @@
 							href="<%=request.getContextPath()%>/logout">Logout</a></li>
 					</ul></li>
 				<li class="nav-item item-0"><a class="nav-link active"
-					aria-current="page" href="#"><img
+					aria-current="page" href="#">
+					<img
 						class="bg-light object-fit-none img-fluid rounded-circle border border-dark border-3"
 						style="width: 40px; height: 40px" alt=""
 						src="${user.photo}"></a></li>

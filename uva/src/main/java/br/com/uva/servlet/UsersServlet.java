@@ -2,6 +2,7 @@ package br.com.uva.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,6 +37,9 @@ public class UsersServlet extends HttpServlet {
 		if (search == null || search.isEmpty()) {
 			search = "";
 		}
+		
+		Integer page = Integer.parseInt(req.getParameter("page"));
+		
 
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpSession session = request.getSession();
@@ -45,16 +49,23 @@ public class UsersServlet extends HttpServlet {
 		Role role = user.getRole();
 
 		List<User> users = null;
+		Double usersCount = 0d;
 
+		
 		if (role.equals(Role.ADMINISTRATOR)) {
-			users = new UserDAO().getUsersSupports(search);
+			users = new UserDAO().getUsersSupports(search, page);
+			usersCount = new UserDAO().countUsersSupports(search);
+			
+		} else if (role.equals(Role.SUPPORT)) {
+			users = new UserDAO().getUsers(search, page);
+			usersCount = new UserDAO().countUsers(search);
 		}
 
-		if (role.equals(Role.SUPPORT)) {
-			users = new UserDAO().getUsers(search);
-		}
-
-		senderResponse(users, 200, resp);
+		List<Object> data = new ArrayList<Object>();
+		data.add(usersCount);
+		data.add(users);
+		
+		senderResponse(data, 200, resp);
 
 	}
 
@@ -65,15 +76,16 @@ public class UsersServlet extends HttpServlet {
 
 			Part part = request.getPart("photo");
 			byte[] photo = IOUtils.toByteArray(part.getInputStream());
-			String photoBase64 = "data:image/" + part.getContentType().split("\\/")[1]+ ";base64," + Base64.encodeBase64String(photo);
+			String photoBase64 = "data:image/" + part.getContentType().split("\\/")[1] + ";base64,"
+					+ Base64.encodeBase64String(photo);
 
 			User user = new UserValidateData(request.getParameter("username"), request.getParameter("firstName"),
 					request.getParameter("lastName"), request.getParameter("document"),
 					request.getParameter("password")).getUser();
-			
+
 			user.setPhoto(photoBase64);
 			user.setPhotoExtension(part.getContentType().split("\\/")[1]);
-			
+
 			if (new UserDAO().create(user, Long.parseLong(request.getParameter("userType")))) {
 				HashMap<String, String> dataResponse = new HashMap<String, String>();
 				dataResponse.put("detail", "User added");
@@ -101,14 +113,13 @@ public class UsersServlet extends HttpServlet {
 
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		JsonObject data = new Gson().fromJson(req.getReader(), JsonObject.class);
 		User user = new User();
 
-		user.setId(data.get("id").getAsLong());
-		user.setUsername(data.get("username").getAsString());
-		user.setFirstName(data.get("firstName").getAsString());
-		user.setLastName(data.get("lastName").getAsString());
-		user.setDocument(data.get("document").getAsString());
+		user.setId(Long.parseLong(req.getParameter("id")));
+		user.setUsername(req.getParameter("username"));
+		user.setFirstName(req.getParameter("firstName"));
+		user.setLastName(req.getParameter("lastName"));
+		user.setDocument(req.getParameter("document"));
 
 		new UserDAO().update(user);
 

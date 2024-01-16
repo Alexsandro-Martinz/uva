@@ -52,12 +52,41 @@
 						<tbody id="usersTable" name="usersTable">
 						</tbody>
 					</table>
+					<div class="row justify-content-center">
+						<nav aria-label="..." class="col-auto">
+							<ul id="pages" class="pagination">
+
+							</ul>
+						</nav>
+					</div>
 				</div>
 			</div>
 
 		</div>
 	</div>
 	<script type="text/javascript">
+	
+	let lastSearch = "";
+	
+function setPages(pages){
+	const pagesUl = document.getElementById("pages");
+	$("#pages > li").remove();
+	for( let i = 1; i<= pages ; i++){
+		const li = document.createElement("li");
+		const span = document.createElement("span");
+		span.className = "page-link"
+		span.appendChild(document.createTextNode(i));
+		li.className = "page-item";
+		li.appendChild(span);
+		
+		li.onclick = () => {
+			getAllUsers(lastSearch, i);
+		}
+		
+		pagesUl.appendChild(li);
+	}
+	
+}
 	
 function setUsersTable(users) {
 	const tblBody = document.getElementById("usersTable");
@@ -125,16 +154,17 @@ function setUsersTable(users) {
 		tblBody.appendChild(row);
 		count++;
 	});
-
 }
 
-function getAllUsers(search = "") {
-	fetch("<%=request.getContextPath()%>/api/users?search=" + search)
+function getAllUsers(search = "", page = 1) {
+	fetch("<%=request.getContextPath()%>/api/users?search=" + search + "&page="+page)
 		.then(data => {
 			return data.json();
 		})
 		.then(users => {
-			setUsersTable(users);
+		
+			setUsersTable(users[1]);
+			setPages(users[0]);
 		});
 }
 
@@ -144,7 +174,8 @@ const searchForm = document.querySelector("#searchForm");
 
 searchForm.addEventListener("submit", (event) => {
 	event.preventDefault();
-	getAllUsers(document.getElementById("search-input").value);
+	lastSearch = document.getElementById("search-input").value; 
+	getAllUsers(lastSearch);
 });
 
 function updateUser(id) {
@@ -176,7 +207,6 @@ function delUser(id, username) {
 </script>
 	<c:import url="/assets/jsp/addUserModal.jsp"></c:import>
 	<c:import url="/assets/jsp/updateUserModal.jsp"></c:import>
-	<c:import url="/assets/jsp/footer.jsp"></c:import>
 	<c:import url="/assets/jsp/scripts.jsp"></c:import>
 </body>
 </html>
