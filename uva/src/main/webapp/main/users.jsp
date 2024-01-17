@@ -85,13 +85,11 @@ function setPages(pages){
 		
 		pagesUl.appendChild(li);
 	}
-	
 }
-	
 function setUsersTable(users) {
+	let count = 1;
 	const tblBody = document.getElementById("usersTable");
 	$('#usersTable > tr').remove();
-	let count = 1;
 	
 	users.forEach(u => {
 

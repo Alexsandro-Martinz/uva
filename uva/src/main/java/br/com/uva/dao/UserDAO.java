@@ -10,7 +10,6 @@ import java.util.List;
 import br.com.uva.connection.SingleConnection;
 import br.com.uva.model.Role;
 import br.com.uva.model.User;
-import jakarta.websocket.server.PathParam;
 
 public class UserDAO {
 

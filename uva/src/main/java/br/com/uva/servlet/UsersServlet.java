@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.tomcat.jakartaee.commons.compress.utils.IOUtils;
+import org.apache.commons.compress.utils.IOUtils;
 import org.apache.tomcat.util.codec.binary.Base64;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import br.com.uva.dao.UserDAO;
 import br.com.uva.model.Role;

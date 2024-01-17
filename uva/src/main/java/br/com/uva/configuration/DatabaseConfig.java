@@ -3,8 +3,6 @@ package br.com.uva.configuration;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import javax.swing.JList.DropLocation;
-
 import br.com.uva.connection.SingleConnection;
 
 public class DatabaseConfig {
