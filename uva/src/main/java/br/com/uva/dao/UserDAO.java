@@ -75,7 +75,7 @@ public class UserDAO {
 				user.setLastName(result.getString("lastName"));
 				user.setDocument(result.getString("document"));
 				user.setRole(Role.getRole(result.getString("role")));
-				user.setPhoto(result.getString("photo"));
+				//user.setPhoto(result.getString("photo"));
 				users.add(user);
 			}
 

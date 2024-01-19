@@ -113,13 +113,11 @@ public class UsersServlet extends HttpServlet {
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		User user = new User();
-
-		user.setId(Long.parseLong(req.getParameter("id")));
+		user.setId(Long.parseLong(req.getParameter("userId")));
 		user.setUsername(req.getParameter("username"));
 		user.setFirstName(req.getParameter("firstName"));
 		user.setLastName(req.getParameter("lastName"));
 		user.setDocument(req.getParameter("document"));
-
 		new UserDAO().update(user);
 
 	}
