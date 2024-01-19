@@ -21,11 +21,11 @@
 					<h1 class="display-4 mb-3 fw-bold text-center">Login</h1>
 					<div class="mb-3">
 						<label for="username" class="form-label">Username</label> <input
-							value="admin" type="text" class="form-control" name="username">
+							 type="text" class="form-control" name="username">
 					</div>
 					<div class="mb-3">
 						<label for="password" class="form-label">Password</label> <input
-							type="password" value="admin" class="form-control"
+							type="password" class="form-control"
 							name="password">
 					</div>
 					<div class="mb-3 form-check">
